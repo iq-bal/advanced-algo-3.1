@@ -7,25 +7,23 @@ using namespace std;
 
 const int N = 1e3;
 vector<int> g[N];
-bool vis[N];
-int color[N]={-1};
+int color[N];
+
 
 bool isBipartite(int source){
+	memset(color , -1  , sizeof color);
 	queue<int>q;
 	q.push(source);
 	color[source]= 0; 
 	while(!q.empty()){
 		int d = q.front();
 		q.pop();
-		if(!vis[d]){
-			vis[d]=true;
-			for(int child: g[d]){
-				if(color[child]==color[d]) return false;
-				if(color[child]==-1){
-					color[child]= 1- color[d];
-					q.push(child);
-				}
+		for(int child: g[d]){
+			if(color[child]==-1){
+				color[child]= 1- color[d];
+				q.push(child);
 			}
+			else if(color[child]==color[d]) return false;
 		}
 	}
 	return true; 
